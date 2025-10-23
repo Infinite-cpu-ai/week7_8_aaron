@@ -1,37 +1,24 @@
 package com.hanzelius.week7_8_aaron.ui.model
 
 data class WeatherResponse(
-    val weather: List<Weather>,
-    val main: Main,
-    val wind: Wind,
-    val clouds: Clouds,
-    val sys: Sys,
-    val name: String
-)
+    val cityName: String,
+    val currentDate: String,
+    val updateTime: String,
 
-data class Weather(
-    val main: String,
-    val description: String,
-    val icon: String
-)
+    val iconCondition: String? = null,
+    val condition: String,
+    val temperature: Double,
 
-data class Main(
-    val temp: Double,
-    val feels_like: Double,
+    val humidityPercentage: Int,
+    val windSpeed: Double,
+    val tempFeelsLike: Double,
+    val rain_fall: Double,
     val pressure: Int,
-    val humidity: Int
-)
+    val cloudiness: Int,
 
-data class Wind(
-    val speed: Double
-)
+    val sunrise: Int,
+    val sunset: Int,
 
-data class Clouds(
-    val all: Int
-)
-
-data class Sys(
-    val country: String,
-    val sunrise: Long,
-    val sunset: Long
+    val isError: Boolean = false,
+    val errorMessage: String = ""
 )
