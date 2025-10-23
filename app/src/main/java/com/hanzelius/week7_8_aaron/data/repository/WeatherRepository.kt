@@ -17,17 +17,21 @@ class WeatherRepository (private val service: WeatherService){
             cityName = weathers.name,
             currentDate = "",
             updateTime = "",
+
             iconCondition = weathers.weather[0].icon,
             condition = weathers.weather[0].main,
             temperature = weathers.main.temp,
+
             humidityPercentage = weathers.main.humidity,
             windSpeed = weathers.wind.speed,
             tempFeelsLike = weathers.main.feels_like,
             rain_fall = weathers.rain.`1h`,
             pressure = weathers.main.pressure,
             cloudiness = weathers.clouds.all,
+
             sunrise = weathers.sys.sunrise,
             sunset = weathers.sys.sunset,
+
             isError = false,
             errorMessage = ""
         )
