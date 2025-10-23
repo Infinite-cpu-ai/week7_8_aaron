@@ -6,5 +6,4 @@ import com.hanzelius.week7_8_aaron.data.service.WeatherService
 
 class WeatherRepository (private val service: WeatherService){
 
-    suspend fun
 }
