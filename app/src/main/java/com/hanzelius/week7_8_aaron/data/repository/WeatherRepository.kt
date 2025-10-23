@@ -25,7 +25,7 @@ class WeatherRepository (private val service: WeatherService){
             humidityPercentage = weathers.main.humidity,
             windSpeed = weathers.wind.speed,
             tempFeelsLike = weathers.main.feels_like,
-            rain_fall = weathers.rain.`1h`,
+            rainFall = weathers.rain.`1h`,
             pressure = weathers.main.pressure,
             cloudiness = weathers.clouds.all,
 

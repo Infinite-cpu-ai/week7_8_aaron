@@ -12,7 +12,7 @@ data class WeatherResponse(
     val humidityPercentage: Int,
     val windSpeed: Double,
     val tempFeelsLike: Double,
-    val rain_fall: Double,
+    val rainFall: Double,
     val pressure: Int,
     val cloudiness: Int,
 
