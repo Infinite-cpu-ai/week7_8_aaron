@@ -1,4 +1,4 @@
-package com.hanzelius.week7_8_aaron.data.container
+package com.hanzelius.week7_8_aaron.data.dto
 
 data class Sys(
     val country: String,
