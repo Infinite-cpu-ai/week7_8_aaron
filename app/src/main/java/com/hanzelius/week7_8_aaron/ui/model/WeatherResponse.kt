@@ -1,37 +1,37 @@
 package com.hanzelius.week7_8_aaron.ui.model
 
 data class WeatherResponse(
-    val weather: List<Weather>,   // Kondisi cuaca (main, desc, icon)
-    val main: Main,               // Suhu, humidity, pressure, feels_like
-    val wind: Wind,               // Kecepatan angin
-    val clouds: Clouds,           // Persentase awan
-    val sys: Sys,                 // Sunrise & sunset
-    val name: String              // Nama kota
+    val weather: List<Weather>,
+    val main: Main,
+    val wind: Wind,
+    val clouds: Clouds,
+    val sys: Sys,
+    val name: String
 )
 
 data class Weather(
-    val main: String,             // "Clouds"
-    val description: String,      // "few clouds"
-    val icon: String              // "02d"
+    val main: String,
+    val description: String,
+    val icon: String
 )
 
 data class Main(
-    val temp: Double,             // 302.7 (Kelvin)
-    val feels_like: Double,       // 309.21 (Kelvin)
-    val pressure: Int,            // 1006
-    val humidity: Int             // 79
+    val temp: Double,
+    val feels_like: Double,
+    val pressure: Int,
+    val humidity: Int
 )
 
 data class Wind(
-    val speed: Double             // 2.06
+    val speed: Double
 )
 
 data class Clouds(
-    val all: Int                  // 20
+    val all: Int
 )
 
 data class Sys(
-    val country: String,          // "ID"
-    val sunrise: Long,            // 1761169949
-    val sunset: Long              // 1761213678
+    val country: String,
+    val sunrise: Long,
+    val sunset: Long
 )
