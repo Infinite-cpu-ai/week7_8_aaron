@@ -36,4 +36,7 @@ class WeatherRepository (private val service: WeatherService){
             errorMessage = ""
         )
     }
+    private fun getIconUrl(iconCode: String): String {
+        return "https://openweathermap.org/img/wn/${iconCode}@2x.png"
+    }
 }
