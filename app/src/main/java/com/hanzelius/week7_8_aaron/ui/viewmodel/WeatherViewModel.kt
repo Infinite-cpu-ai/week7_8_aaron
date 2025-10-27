@@ -7,11 +7,16 @@ import com.hanzelius.week7_8_aaron.data.container.WeatherContainer
 import com.hanzelius.week7_8_aaron.data.repository.WeatherRepository
 import com.hanzelius.week7_8_aaron.ui.model.WeatherResponse
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import kotlin.text.format
 
 class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
 
@@ -21,31 +26,36 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     private val _weatherIconUrl = MutableStateFlow("")
     val weatherIconUrl: StateFlow<String> = _weatherIconUrl
 
-    private val _currentDate = MutableStateFlow("")
-    val currentDate: StateFlow<String> = _currentDate
+    val currentDate: StateFlow<String> = weather.map { weatherResponse ->
+        SimpleDateFormat ("MMMM dd", Locale("id")).format(Date())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = ""
+    )
 
-    private val _updateTime = MutableStateFlow("")
-    val updateTime: StateFlow<String> = _updateTime
+    val updateTime: StateFlow<String> = weather.map { weatherResponse ->
+        SimpleDateFormat ("h:mm a", Locale("id")).format(Date())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = ""
+    )
 
-    private val _sunrise = MutableStateFlow("")
-    val sunrise: StateFlow<String> = _sunrise
+    val sunset: StateFlow<String> = weather.map { weatherResponse ->
+        SimpleDateFormat ("h:mm a", Locale("id")).format(Date())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = ""
+    )
 
-    private val _sunset = MutableStateFlow("")
-    val sunset: StateFlow<String> = _sunset
-
-    private fun formatUnixTime(unixSeconds: Int): String {
-        val date = Date(unixSeconds * 1000L)
-        return SimpleDateFormat("h:mm a", Locale.getDefault()).format(date)
-    }
-    fun formatTime(unixSeconds: Long): String {
-        val date = Date(unixSeconds * 1000L)
-        val sdf = SimpleDateFormat("h:mm a", Locale.getDefault())
-        return sdf.format(date)
-    }
-
-    val formattedUpdateTime = formatTime(System.currentTimeMillis() / 1000)
-    val weatherResponse = WeatherResponse(
-        updateTime = formattedUpdateTime
+    val sunrise: StateFlow<String> = weather.map { weatherResponse ->
+        SimpleDateFormat ("h:mm a", Locale("id")).format(Date())
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.Eagerly,
+        initialValue = ""
     )
 
     fun getWeatherTriples(weather: WeatherResponse): List<Triple<Int, String, String>> {
@@ -59,6 +69,14 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         )
     }
 
+    val setrise = combine(sunrise, sunset) { sunrise, sunset ->
+        listOf(
+            Triple(R.drawable.vector, "Sunrise", sunrise),
+            Triple(R.drawable.vector_21png, "Sunset", sunset)
+        )
+    }.stateIn(viewModelScope, started = SharingStarted.Eagerly,
+        initialValue = emptyList())
+
 
     fun loadWeather(city: String) {
         viewModelScope.launch {
@@ -71,18 +89,8 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
                 val repo = WeatherContainer().weatherRepository
                 val result = repo.getWeather(city)
 
-                val dateFormatter = SimpleDateFormat("MMMM dd", Locale.getDefault())
-                val timeFormatter = SimpleDateFormat("h:mm a", Locale.getDefault())
-                val now = Date()
-
-                _currentDate.value = dateFormatter.format(now)
-                _updateTime.value = "Updated as of ${timeFormatter.format(now)}"
-                _sunrise.value = formatUnixTime(result.sunrise)
-                _sunset.value = formatUnixTime(result.sunset)
 
                 _weather.value = result.copy(
-                    currentDate = _currentDate.value,
-                    updateTime = _updateTime.value,
                     isError = false,
                     errorMessage = null
                 )
@@ -90,10 +98,11 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
                 _weatherIconUrl.value = repo.getIconUrl(result.iconCondition ?: "").url
 
             } catch (e: Exception) {
-                _weather.value = WeatherResponse(
+                _weather.value = _weather.value.copy(
                     isError = true,
                     errorMessage = "HTTP 404 Not Found"
                 )
+                _weatherIconUrl.value = ""
             }
         }
     }
