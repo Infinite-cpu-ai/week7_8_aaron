@@ -22,7 +22,7 @@ class WeatherContainer {
         retrofit.create(WeatherService::class.java)
     }
 
-    private val weatherRepository: WeatherRepository by lazy {
+    public val weatherRepository: WeatherRepository by lazy {
         WeatherRepository(retrofitService)
     }
 }
