@@ -27,7 +27,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     val weatherIconUrl: StateFlow<String> = _weatherIconUrl
 
     val currentDate: StateFlow<String> = weather.map { weatherResponse ->
-        SimpleDateFormat ("MMMM dd", Locale("id")).format(Date())
+        SimpleDateFormat("MMMM dd", Locale("id")).format(Date(weatherResponse.currentDate * 1000L))
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -35,7 +35,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     )
 
     val updateTime: StateFlow<String> = weather.map { weatherResponse ->
-        SimpleDateFormat ("h:mm a", Locale("id")).format(Date())
+        SimpleDateFormat("h:mm a", Locale("id")).format(Date(weatherResponse.currentDate * 1000L))
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -43,7 +43,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     )
 
     val sunset: StateFlow<String> = weather.map { weatherResponse ->
-        SimpleDateFormat ("h:mm a", Locale("id")).format(Date())
+        SimpleDateFormat("h:mm a", Locale("id")).format(Date(weatherResponse.sunset * 1000L))
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -51,7 +51,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
     )
 
     val sunrise: StateFlow<String> = weather.map { weatherResponse ->
-        SimpleDateFormat ("h:mm a", Locale("id")).format(Date())
+        SimpleDateFormat("h:mm a", Locale("id")).format(Date(weatherResponse.sunrise * 1000L))
     }.stateIn(
         scope = viewModelScope,
         started = SharingStarted.Eagerly,
@@ -71,11 +71,13 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
 
     val setrise = combine(sunrise, sunset) { sunrise, sunset ->
         listOf(
-            Triple(R.drawable.vector, "Sunrise", sunrise),
-            Triple(R.drawable.vector_21png, "Sunset", sunset)
+            Triple(R.drawable.vector, "SUNRISE", sunrise),
+            Triple(R.drawable.vector_21png, "SUNSET", sunset)
         )
-    }.stateIn(viewModelScope, started = SharingStarted.Eagerly,
-        initialValue = emptyList())
+    }.stateIn(
+        viewModelScope, started = SharingStarted.Eagerly,
+        initialValue = emptyList()
+    )
 
 
     fun loadWeather(city: String) {
