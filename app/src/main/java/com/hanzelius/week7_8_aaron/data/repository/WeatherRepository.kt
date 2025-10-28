@@ -1,7 +1,6 @@
 package com.hanzelius.week7_8_aaron.data.repository
 
-import com.hanzelius.week7_8_aaron.data.dto.Weather
-import com.hanzelius.week7_8_aaron.data.dto.WeatherItem
+import com.hanzelius.week7_8_aaron.data.dto.WeatherIcon
 import com.hanzelius.week7_8_aaron.data.service.WeatherService
 import com.hanzelius.week7_8_aaron.ui.model.WeatherResponse
 
@@ -15,8 +14,7 @@ class WeatherRepository (private val service: WeatherService){
         ).body()!!
         return WeatherResponse(
             cityName = weathers.name,
-            currentDate = "",
-            updateTime = "",
+            currentDate = weathers.dt,
 
             iconCondition = weathers.weather[0].icon,
             condition = weathers.weather[0].main,
@@ -36,7 +34,8 @@ class WeatherRepository (private val service: WeatherService){
             errorMessage = ""
         )
     }
-    private fun getIconUrl(iconCode: String): String {
-        return "https://openweathermap.org/img/wn/${iconCode}@2x.png"
+    fun getIconUrl(iconCode: String): WeatherIcon {
+        val iconUrl = "https://openweathermap.org/img/wn/${iconCode}@2x.png"
+        return WeatherIcon(iconCode, iconUrl)
     }
 }
