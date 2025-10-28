@@ -20,46 +20,59 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.hanzelius.week7_8_aaron.R
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun DetailCard(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    title: String, value: String, image: Int
 ) {
-    Card (
-        modifier = modifier
-            .width(160.dp)
+    Card(
+        modifier = Modifier
+            .width(180.dp)
             .height(180.dp),
-        shape = RoundedCornerShape(15.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.LightGray.copy(0.25f)
+            containerColor = Color.Gray.copy(0.1f)
         )
-    ){
-        Column (
-            modifier = modifier
-                .fillMaxSize()
-                .padding(vertical = 10.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ){
+    ) {
+        Column(
+            modifier = modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Top
+        ) {
             Image(
-                painter = painterResource(id = R.drawable.icon_humidity),
-                contentDescription = "Icon",
-                modifier = modifier.size(45.dp)
+                painter = painterResource(id = image),
+                contentDescription = title,
+                modifier = Modifier
+                    .padding(vertical = 12.dp)
+                    .size(64.dp),
+                colorFilter = ColorFilter.tint(Color.White)
+
             )
             Text(
-                text = "Humidity",
-                modifier = modifier.padding(top = 10.dp),
+                text = title,
+                fontSize = 18.sp,
+                color = Color.White.copy(0.7f),
+                modifier = modifier.padding(bottom = 20.dp)
+            )
+            Text(
+                text = value,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
                 color = Color.White
             )
         }
     }
 }
 
+
 @Preview
 @Composable
 fun DetailCardPreview() {
-    DetailCard()
+    DetailCard(Modifier, "HUMIDITY", "49%", R.drawable.icon_humidity)
 }
