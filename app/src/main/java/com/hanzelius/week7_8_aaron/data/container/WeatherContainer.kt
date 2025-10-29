@@ -10,7 +10,7 @@ import kotlin.getValue
 class WeatherContainer {
 
     companion object{
-        val BASE_URL = "https://api.openweathermap.org/data/2.5/"
+        val BASE_URL = "https://api.openweathermap.org"
     }
 
     private val retrofit = Retrofit.Builder()
