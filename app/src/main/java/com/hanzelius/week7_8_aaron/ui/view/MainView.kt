@@ -23,6 +23,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.lazy.grid.items
+import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.AsyncImage
 import com.hanzelius.week7_8_aaron.R
 import com.hanzelius.week7_8_aaron.ui.viewmodel.WeatherViewModel
@@ -30,7 +31,7 @@ import com.hanzelius.week7_8_aaron.ui.viewmodel.WeatherViewModel
 @Composable
 fun MainView(
     modifier: Modifier = Modifier,
-    viewModel: WeatherViewModel
+    viewModel: WeatherViewModel = viewModel()
 ) {
     val weather by viewModel.weather.collectAsState()
     val iconUrl by viewModel.weatherIconUrl.collectAsState()
