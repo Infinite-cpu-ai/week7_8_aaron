@@ -57,7 +57,6 @@ fun ErrorView(
     }
 }
 
-
 @Preview
 @Composable
 fun ErrorViewPreview() {

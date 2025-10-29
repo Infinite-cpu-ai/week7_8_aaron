@@ -16,7 +16,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.hanzelius.week7_8_aaron.R
-
 @Composable
 fun SunCard(
     modifier: Modifier = Modifier,

@@ -40,7 +40,6 @@ fun MainView(
     val sunriseSunset by viewModel.setrise.collectAsState()
     val detailItems = viewModel.getWeatherTriples(weather)
 
-
     Column(
         modifier = modifier
             .fillMaxSize()

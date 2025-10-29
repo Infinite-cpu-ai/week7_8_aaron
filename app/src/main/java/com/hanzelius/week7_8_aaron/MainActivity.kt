@@ -18,7 +18,6 @@ import com.hanzelius.week7_8_aaron.ui.viewmodel.WeatherViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         val container = WeatherContainer()
 
         setContent {

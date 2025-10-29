@@ -3,7 +3,6 @@ package com.hanzelius.week7_8_aaron.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hanzelius.week7_8_aaron.R
-import com.hanzelius.week7_8_aaron.data.container.WeatherContainer
 import com.hanzelius.week7_8_aaron.data.repository.WeatherRepository
 import com.hanzelius.week7_8_aaron.ui.model.WeatherResponse
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,13 +17,10 @@ import java.util.Date
 import java.util.Locale
 
 class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
-
     private val _weather = MutableStateFlow(WeatherResponse())
     val weather: StateFlow<WeatherResponse> = _weather
-
     private val _weatherIconUrl = MutableStateFlow("")
     val weatherIconUrl: StateFlow<String> = _weatherIconUrl
-
     val currentDate: StateFlow<String> = weather.map { weatherResponse ->
         SimpleDateFormat("MMMM dd", Locale("id")).format(Date(weatherResponse.currentDate * 1000L))
     }.stateIn(
@@ -32,7 +28,6 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         started = SharingStarted.Eagerly,
         initialValue = ""
     )
-
     val updateTime: StateFlow<String> = weather.map { weatherResponse ->
         SimpleDateFormat("h:mm a", Locale("id")).format(Date(weatherResponse.currentDate * 1000L))
     }.stateIn(
@@ -40,7 +35,6 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         started = SharingStarted.Eagerly,
         initialValue = ""
     )
-
     val sunset: StateFlow<String> = weather.map { weatherResponse ->
         SimpleDateFormat("h:mm a", Locale("id")).format(Date(weatherResponse.sunset * 1000L))
     }.stateIn(
@@ -48,7 +42,6 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         started = SharingStarted.Eagerly,
         initialValue = ""
     )
-
     val sunrise: StateFlow<String> = weather.map { weatherResponse ->
         SimpleDateFormat("h:mm a", Locale("id")).format(Date(weatherResponse.sunrise * 1000L))
     }.stateIn(
@@ -56,7 +49,6 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         started = SharingStarted.Eagerly,
         initialValue = ""
     )
-
     fun getWeatherTriples(weather: WeatherResponse): List<Triple<Int, String, String>> {
         return listOf(
             Triple(R.drawable.icon_humidity, "HUMIDITY", "${weather.humidityPercentage}%"),
@@ -67,7 +59,6 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
             Triple(R.drawable.cloud, "CLOUDS", "${weather.cloudiness}%")
         )
     }
-
     val setrise = combine(sunrise, sunset) { sunrise, sunset ->
         listOf(
             Triple(R.drawable.vector, "SUNRISE", sunrise),
@@ -77,20 +68,16 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         viewModelScope, started = SharingStarted.Eagerly,
         initialValue = emptyList()
     )
-
     val query = MutableStateFlow("")
-
     fun onQueryChange(newValue: String) {
         query.value = newValue
     }
-
     fun search() {
         val q = query.value.trim()
         if (q.isNotEmpty()) {
             loadWeather(q)
         }
     }
-
     fun loadWeather(city: String) {
         viewModelScope.launch {
             _weather.value = _weather.value.copy(

@@ -66,7 +66,6 @@ fun DetailCard(
     }
 }
 
-
 @Preview
 @Composable
 fun DetailCardPreview() {
