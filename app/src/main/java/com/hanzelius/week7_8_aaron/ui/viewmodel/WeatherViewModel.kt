@@ -16,7 +16,6 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
-import kotlin.text.format
 
 class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
 
@@ -60,12 +59,12 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
 
     fun getWeatherTriples(weather: WeatherResponse): List<Triple<Int, String, String>> {
         return listOf(
-            Triple(R.drawable.icon_humidity, "Humidity", "${weather.humidityPercentage}%"),
-            Triple(R.drawable.icon_wind, "Wind", "${weather.windSpeed} km/h"),
-            Triple(R.drawable.icon_feels_like, "Feels Like", "${weather.tempFeelsLike}°"),
-            Triple(R.drawable.vector_2, "Rainfall", "${weather.rainFall} mm"),
-            Triple(R.drawable.devices, "Pressure", "${weather.pressure} hPa"),
-            Triple(R.drawable.cloud, "Clouds", "${weather.cloudiness}%")
+            Triple(R.drawable.icon_humidity, "HUMIDITY", "${weather.humidityPercentage}%"),
+            Triple(R.drawable.icon_wind, "WIND", "${weather.windSpeed} km/h"),
+            Triple(R.drawable.icon_feels_like, "FEELS LIKE", "${weather.tempFeelsLike.toInt()}°"),
+            Triple(R.drawable.vector_2, "RAINFALL", "${weather.rainFall} mm"),
+            Triple(R.drawable.devices, "PRESSURE", "${weather.pressure} hPa"),
+            Triple(R.drawable.cloud, "CLOUDS", "${weather.cloudiness}%")
         )
     }
 
@@ -79,6 +78,18 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
         initialValue = emptyList()
     )
 
+    val query = MutableStateFlow("")
+
+    fun onQueryChange(newValue: String) {
+        query.value = newValue
+    }
+
+    fun search() {
+        val q = query.value.trim()
+        if (q.isNotEmpty()) {
+            loadWeather(q)
+        }
+    }
 
     fun loadWeather(city: String) {
         viewModelScope.launch {
@@ -88,8 +99,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
             )
 
             try {
-                val repo = WeatherContainer().weatherRepository
-                val result = repo.getWeather(city)
+                val result = repository.getWeather(city)
 
 
                 _weather.value = result.copy(
@@ -97,12 +107,12 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
                     errorMessage = null
                 )
 
-                _weatherIconUrl.value = repo.getIconUrl(result.iconCondition ?: "").url
+                _weatherIconUrl.value = repository.getIconUrl(result.iconCondition ?: "").url
 
             } catch (e: Exception) {
                 _weather.value = _weather.value.copy(
                     isError = true,
-                    errorMessage = "HTTP 404 Not Found"
+                    errorMessage = e.message ?: "HTTP 404 Not Found"
                 )
                 _weatherIconUrl.value = ""
             }

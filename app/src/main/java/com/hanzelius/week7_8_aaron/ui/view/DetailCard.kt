@@ -30,10 +30,10 @@ fun DetailCard(
 ) {
     Card(
         modifier = Modifier
-            .width(180.dp)
-            .height(180.dp),
+            .width(120.dp)
+            .height(120.dp),
         colors = CardDefaults.cardColors(
-            containerColor = Color.Gray.copy(0.1f)
+            containerColor = Color.Gray.copy(0.1f),
         )
     ) {
         Column(
@@ -46,15 +46,15 @@ fun DetailCard(
                 contentDescription = title,
                 modifier = Modifier
                     .padding(vertical = 12.dp)
-                    .size(64.dp),
+                    .size(30.dp),
                 colorFilter = ColorFilter.tint(Color.White)
 
             )
             Text(
                 text = title,
-                fontSize = 18.sp,
+                fontSize = 14.sp,
                 color = Color.White.copy(0.7f),
-                modifier = modifier.padding(bottom = 20.dp)
+                modifier = modifier.padding(bottom = 10.dp)
             )
             Text(
                 text = value,
