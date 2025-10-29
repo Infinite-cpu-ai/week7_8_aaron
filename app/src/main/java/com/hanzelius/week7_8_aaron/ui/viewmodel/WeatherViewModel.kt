@@ -99,7 +99,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
             } catch (e: Exception) {
                 _weather.value = _weather.value.copy(
                     isError = true,
-                    errorMessage = e.message ?: "HTTP 404 Not Found"
+                    errorMessage = "HTTP 404 Not Found"
                 )
                 _weatherIconUrl.value = ""
             }
