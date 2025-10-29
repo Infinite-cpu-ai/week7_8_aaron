@@ -3,6 +3,7 @@ package com.hanzelius.week7_8_aaron
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -18,24 +19,10 @@ import com.hanzelius.week7_8_aaron.ui.viewmodel.WeatherViewModel
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val container = WeatherContainer()
-
+        enableEdgeToEdge()
         setContent {
             Week7_8_AaronTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    val weatherViewModel: WeatherViewModel = viewModel(
-                        factory = object : ViewModelProvider.Factory {
-                            @Suppress("UNCHECKED_CAST")
-                            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                                return WeatherViewModel(container.weatherRepository) as T
-                            }
-                        }
-                    )
-                    MainView(viewModel = weatherViewModel)
-                }
+                MainView()
             }
         }
     }

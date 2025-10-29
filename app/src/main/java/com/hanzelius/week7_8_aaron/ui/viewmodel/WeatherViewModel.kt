@@ -3,7 +3,7 @@ package com.hanzelius.week7_8_aaron.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.hanzelius.week7_8_aaron.R
-import com.hanzelius.week7_8_aaron.data.repository.WeatherRepository
+import com.hanzelius.week7_8_aaron.data.container.WeatherContainer
 import com.hanzelius.week7_8_aaron.ui.model.WeatherResponse
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -16,7 +16,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() {
+class WeatherViewModel : ViewModel() {
     private val _weather = MutableStateFlow(WeatherResponse())
     val weather: StateFlow<WeatherResponse> = _weather
     private val _weatherIconUrl = MutableStateFlow("")
@@ -86,7 +86,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
             )
 
             try {
-                val result = repository.getWeather(city)
+                val result = WeatherContainer().weatherRepository.getWeather(city)
 
 
                 _weather.value = result.copy(
@@ -94,7 +94,7 @@ class WeatherViewModel(private val repository: WeatherRepository) : ViewModel() 
                     errorMessage = null
                 )
 
-                _weatherIconUrl.value = repository.getIconUrl(result.iconCondition ?: "").url
+                _weatherIconUrl.value = WeatherContainer().weatherRepository.getIconUrl(result.iconCondition ?: "").url
 
             } catch (e: Exception) {
                 _weather.value = _weather.value.copy(
