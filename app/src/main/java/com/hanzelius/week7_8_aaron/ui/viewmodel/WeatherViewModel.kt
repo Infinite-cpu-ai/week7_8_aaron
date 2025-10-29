@@ -71,11 +71,15 @@ class WeatherViewModel : ViewModel() {
     val query = MutableStateFlow("")
     fun onQueryChange(newValue: String) {
         query.value = newValue
+
     }
     fun search() {
         val q = query.value.trim()
         if (q.isNotEmpty()) {
             loadWeather(q)
+        } else {
+            _weather.value = WeatherResponse()
+            _weatherIconUrl.value = ""
         }
     }
     fun loadWeather(city: String) {
