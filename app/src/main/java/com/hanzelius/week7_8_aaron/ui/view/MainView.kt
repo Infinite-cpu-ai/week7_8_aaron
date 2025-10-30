@@ -66,6 +66,8 @@ fun MainView(
                         color = Color.LightGray
                     )
                 },
+                singleLine = true,
+                maxLines = 1,
                 shape = RoundedCornerShape(15.dp),
                 modifier = modifier.weight(0.7f),
                 leadingIcon = {
